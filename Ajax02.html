@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<h id="demo"></h><br>
+	<button type="button" onclick="loadDoc()">Change Text</button>
+	<script >
+		function loadDoc(){
+			var xhttp=new XMLHttpRequest();
+			xhttp.onreadystatechange=function(){
+				if(this.readyState == 4 && this.status== 200){
+					document.getElementById("demo").innerHTML="working";
+					var  myObject = JSON.parse(this.responseText);
+					var i;
+					
+					for( i=0;i< myObject.length ;i++){
+						
+							console.log(myObject[i].region.confirmed);
+							
+					}
+				}
+			};
+			xhttp.open("GET","data.json",true);
+			xhttp.send();
+
+		}
+	</script>
+
+</body>
+</html>
