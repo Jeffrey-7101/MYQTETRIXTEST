@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
+<title></title>
 </head>
 <body>
 	<h id="demo"></h><br>
@@ -13,14 +10,21 @@
 				if(this.readyState == 4 && this.status== 200){
 					document.getElementById("demo").innerHTML="working";
 					var  myObject = JSON.parse(this.responseText);
+					var html = "<table style ='width:100%'>\n>"
 					var i;
-					
 					for( i=0;i< myObject.length ;i++){
-						
-							console.log(myObject[i].region.confirmed);
-							
+						var name=myObject[i].region;
+						var confirmed=myObject[i].confirmed;
+						for(j in confirmed){
+							var value= Number(confirmed[j].value);
+						}
+						html +="<tr>\n";
+						html +='<th>'+ name + '</th> <th>' + value +'</th>\n';
 					}
-				}
+					html += '</tr>\n';
+					html += '</table> \n';
+					document.getElementById("demo").innerHTML =html;
+				}	
 			};
 			xhttp.open("GET","data.json",true);
 			xhttp.send();
