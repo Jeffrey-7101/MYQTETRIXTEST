@@ -12,18 +12,37 @@
             console.log("Listo")
             var myObject= JSON.parse(this.responseText);
             var newArray= toArray(myObject); // trasformo el objeto a un arreglo 
+            var Arequipa=extRegion(newArray);
             google.charts.load('current', {packages: ['corechart', 'bar']});
-            google.charts.setOnLoadCallback(drawBasic(this));
+            google.charts.setOnLoadCallback(draw(Arequipa));
         }
       };
-      xhttp.open("GET","dad.json",true);
+      xhttp.open("GET","data.json",true);
       xhttp.send();
 
   }
-  function drawBasic() {
-
-      
-    }
+  function extRegion(newArray){
+    var arrayAQP;
+    for(var i=0;i<newArray.length-1;i++){
+        if (newArray[i].name=="Arequipa") {}
+            var fecha=newArray[i].nconfirmed.date;
+            var cantidad=newArray[i].nconfirmed.value;
+            var nObject={fechas:fecha,cantidades:cantidad};
+            arrayAQP.push(nObject);
+         }
+         return arrayAQP;
+  }    
+  function draw(Arequipa) {
+      for(var i=0;i<Arequipa.length-1;i++){
+        var fecha=Arequipa[i].fechas;
+        var cantidad=Arequipa[i].cantidades;
+      var data = google.visualization.arrayToDataTable([
+                  [fecha, cantidad.value]
+                  ]);
+      }
+      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+  }
   function toArray(myObject){
       var newArray=[];
       for(var i=0;i<myObject.length-1;i++){
