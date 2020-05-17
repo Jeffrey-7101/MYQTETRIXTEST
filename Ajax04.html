@@ -22,33 +22,38 @@
 
   }
   function extRegion(newArray){
-    var arrayAQP;
+    var arrayAQP=[];
     for(var i=0;i<newArray.length-1;i++){
-        if (newArray[i].name=="Arequipa") {}
-            var fecha=newArray[i].nconfirmed.date;
-            var cantidad=newArray[i].nconfirmed.value;
+        if (newArray[i].name ="Arequipa") {
+            console.log("si detecta");//mensaje de ayuda para verificar si el objeto fue leido
+            var ayuda=newArray[i].valor;
+            var fecha=ayuda.date;
+            var cantidad=ayuda.value;
             var nObject={fechas:fecha,cantidades:cantidad};
             arrayAQP.push(nObject);
+            }   
          }
          return arrayAQP;
-  }    
+      }   
   function draw(Arequipa) {
       for(var i=0;i<Arequipa.length-1;i++){
         var fecha=Arequipa[i].fechas;
         var cantidad=Arequipa[i].cantidades;
+      
       var data = google.visualization.arrayToDataTable([
-                  [fecha, cantidad.value]
-                  ]);
-      }
+          ['Fecha', 'Cantidad por fecha',],
+          [fecha, cantidad],
+        ]);
+       }
       var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
       chart.draw(data, options);
-  }
-  function toArray(myObject){
+    }
+ function toArray(myObject){
       var newArray=[];
       for(var i=0;i<myObject.length-1;i++){
         var region=myObject[i].region;
-        var confirmed=myObject[i].confirmed;
-        var object={name:region,value:confirmed.value};
+        var nconfirmed=myObject[i].confirmed;
+        var object={name:region,valor:nconfirmed};
         newArray.push(object);
       };
       return newArray;
@@ -58,7 +63,7 @@
   </head>
 
   <body>
-    
+    <button type="button" onclick="loadDoc()">Dibujar</button>
     <div id="chart_div"></div>
   </body>
 </html>
