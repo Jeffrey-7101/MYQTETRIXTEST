@@ -37,8 +37,9 @@ void QTetrixBoard::start(){
         numLinesRemoved=0;
         numPiecesDropped=0;
         score=0;
-        if(this->dificultBoard==3)
+        if(this->dificultBoard==3){
             level=5;
+        }
         else
             level=1;
 
