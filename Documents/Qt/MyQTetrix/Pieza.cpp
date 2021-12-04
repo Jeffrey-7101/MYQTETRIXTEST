@@ -18,7 +18,7 @@ void Pieza::setShape(Forma forma){
 
         for (int i = 0; i < 4 ; i++) {
             for (int j = 0; j < 2; ++j)
-                coords[i][j] = coordsTable[1][i][j];
+                coords[i][j] = coordsTable[forma][i][j];
         }
         formaPieza = forma;
 }

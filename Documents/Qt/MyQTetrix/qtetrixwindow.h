@@ -6,6 +6,8 @@
 #include <QLabel>
 #include <QLCDNumber>
 #include <QPushButton>
+#include <QMessageBox>
+
 
 #include "qtetrixboard.h"
 
@@ -20,28 +22,37 @@ class QTetrixWindow: public QWidget
 {
     Q_OBJECT;
 public:
-    explicit QTetrixWindow(QWidget *parent= nullptr);
+    explicit QTetrixWindow(QWidget *parent= nullptr, int x=0);
+    QTetrixBoard *board;
 
-
+    int getX()const{
+        return this->aux;
+    }
 private:
 
-    QTetrixBoard *board;
+
 
     QLabel *createLabel(const QString &text);
     QLabel *nextPieceLabel;
+    QLabel *difcultLabel;
     QLCDNumber *scoreLcd;
     QLCDNumber *levelLcd;
     QLCDNumber *linesLcd;
-    //QLabel *dificultLcd;
+
+    QMessageBox *dificultMessage;
+
     QPushButton *startButton;
     QPushButton *quitButton;
     QPushButton *pauseButton;
-    int dificultad;
+    int dificultadWindow=5;
+    int aux;
+
+
 
 public slots:
-    void easy(int d);
-    void normal(int d);
-    void bastard(int d);
+    void easy();
+    void normal();
+    void bastard();
 
    // void dificultSlot(int d);//set Dificult
 signals:

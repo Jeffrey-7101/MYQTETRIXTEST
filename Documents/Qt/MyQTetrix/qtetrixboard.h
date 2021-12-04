@@ -17,8 +17,8 @@ public:
     QSize sizeHint() const override;
     QSize minimumSizeHint() const override;
 
-    void setDificult(int d){this->dificult=d;};
-
+    void setDificultBoard(int d){this->dificultBoard=d;};
+    void tryDifficult();
 private:
     enum{BoardWidth =10, BoardHeight =22};
 
@@ -35,7 +35,7 @@ private:
    int numPiecesDropped;
    int score;
    int level;
-   int dificult;
+   int dificultBoard;
 
 
    Forma board[BoardWidth * BoardHeight];
@@ -59,6 +59,9 @@ private:
    void showNextPiece();
    bool tryMove(const Pieza &newPiece, int newX, int newY);         //verifica si la pieza se puede mover
    void drawSquare(QPainter &painter, int x, int y, Forma forma);
+
+
+
 
 public slots:
     void start();

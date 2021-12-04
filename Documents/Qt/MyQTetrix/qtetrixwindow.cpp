@@ -5,12 +5,12 @@
 #include <QLabel>
 #include <QLCDNumber>
 #include <QPushButton>
+#include <QMessageBox>
 
-
-QTetrixWindow::QTetrixWindow(QWidget *parent)
-    : QWidget(parent), board(new QTetrixBoard)
+QTetrixWindow::QTetrixWindow(QWidget *parent, int x)
+    : QWidget(parent),board(new QTetrixBoard)
 {
-
+        this->aux=x;
         nextPieceLabel = new QLabel;                                    //inicializa labels
         nextPieceLabel->setFrameStyle(QFrame::Box | QFrame::Raised);    //estilo
         nextPieceLabel->setAlignment(Qt::AlignCenter);                  //alineacion
@@ -23,9 +23,10 @@ QTetrixWindow::QTetrixWindow(QWidget *parent)
         levelLcd->setSegmentStyle(QLCDNumber::Outline);
         linesLcd = new QLCDNumber(5);//valor por defecto
         linesLcd->setSegmentStyle(QLCDNumber::Outline);
-       //dificultLcd = new QLCDNumber(1);//valor por defecto
-       // qDebug()<<this->dificultad;
-       // dificultLcd->setSegmentStyle(QLCDNumber::Outline);
+
+        dificultMessage = new QMessageBox();
+        dificultMessage->setText(" ");
+
 
         startButton = new QPushButton(tr("&Start"));    //inicializa botones
         startButton->setFocusPolicy(Qt::NoFocus);
@@ -48,6 +49,9 @@ QTetrixWindow::QTetrixWindow(QWidget *parent)
         connect(board, &QTetrixBoard::levelChanged,levelLcd, qOverload<int>(&QLCDNumber::display));
         connect(board, &QTetrixBoard::linesRemovedChanged, linesLcd, qOverload<int>(&QLCDNumber::display));
 
+
+        board->tryDifficult();
+
     //! [5]
 
     //! [6]
@@ -67,11 +71,11 @@ QTetrixWindow::QTetrixWindow(QWidget *parent)
         layout->addWidget(levelLcd, 3, 0);
         layout->addWidget(startButton, 4, 0);
         layout->addWidget(createLabel(tr("DIFICULTAD")),5,0);
-        if(this->dificultad==1)
-            layout->addWidget(createLabel(tr("FÁCIL")),6,0);
-        else
-            layout->addWidget(createLabel(tr("OTRO")),6,0);
 
+
+
+       // qDebug()<<this->dificultadWindow;
+        //layout->addWidget(dificultLcd,6,0);
         layout->addWidget(board, 0, 1, 6, 1);
         layout->addWidget(createLabel(tr("SCORE")), 0, 2);
         layout->addWidget(scoreLcd, 1, 2);
@@ -84,35 +88,35 @@ QTetrixWindow::QTetrixWindow(QWidget *parent)
         setWindowTitle(tr("Tetrix"));
         resize(550, 370);
     }
-    //! [6]
 
-    //! [7]
-    QLabel *QTetrixWindow::createLabel(const QString &text) // le da formato a label
+   QLabel *QTetrixWindow::createLabel(const QString &text) // le da formato a label
     {
         QLabel *label = new QLabel(text);
         label->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
         return label;
     }
-   void QTetrixWindow::easy(int d){
-        qDebug()<<"modo facil";
-        emit dificultSignal(1);
 
+   //SLOTS
+
+
+   void QTetrixWindow::easy(){
+        qDebug()<<"modo facil";
+        this->dificultadWindow=1;
+        emit dificultSignal(1);
         this->show();
+
     }
-    void QTetrixWindow::normal(int d){
+    void QTetrixWindow::normal(){
         qDebug()<<"modo normal";
+        this->dificultadWindow=2;
         emit dificultSignal(2);
         this->show();
     }
 
-    void QTetrixWindow::bastard(int d){
+    void QTetrixWindow::bastard(){
         qDebug()<<"modo bastard";
+        this->dificultadWindow=3;
         emit dificultSignal(3);
         this->show();
-
     }
-    //SLOTS
-    /*void QTetrixWindow::dificultSlot(int d){
-        this->dificultad=d;
 
-    }*/

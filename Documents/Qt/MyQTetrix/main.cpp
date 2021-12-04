@@ -4,12 +4,17 @@
 
 
 #include "dificultwindow.h"
+#include "qtetrixwindow.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    DificultWindow window;
-    window.show();
+    DificultWindow dwindow;
+    dwindow.show();
+
+    //QTetrixWindow window;
+   // window.show();
+
 
    /* static constexpr int coordsTable[8][4][2] = {
             { { 0, 0 },   { 0, 0 },   { 0, 0 },   { 0, 0 } },

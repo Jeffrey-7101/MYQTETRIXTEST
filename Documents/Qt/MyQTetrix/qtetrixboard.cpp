@@ -6,7 +6,7 @@
 
 QTetrixBoard::QTetrixBoard(QWidget *parent, int _dificult)
 
-    :QFrame(parent), isStarted(false), isPaused(false),dificult(_dificult)
+    :QFrame(parent), isStarted(false), isPaused(false),dificultBoard(_dificult)
 {
     setFrameStyle(QFrame:: Panel | QFrame::Sunken);
     setFocusPolicy(Qt::StrongFocus);
@@ -31,15 +31,18 @@ void QTetrixBoard::start(){
     if(isPaused)
         return;
     else{
-        qDebug()<<this->dificult;
+        qDebug()<<this->dificultBoard;
         isStarted = true;
         isWaitingAfterLine = false;
         numLinesRemoved=0;
         numPiecesDropped=0;
         score=0;
+        if(this->dificultBoard==3)
+            level=5;
+        else
+            level=1;
 
-        if(this->dificult==1)
-        level=1;
+        }
         clear();
 
         emit linesRemovedChanged(numLinesRemoved);
@@ -48,7 +51,7 @@ void QTetrixBoard::start(){
 
         newPiece();
         timer.start(timeOut(),this);
-    }
+
 }
 void QTetrixBoard::pause(){
     if(!isStarted)// si el juego no empezo no hace nada
@@ -63,12 +66,17 @@ void QTetrixBoard::pause(){
 }
 
 void QTetrixBoard::difficult(int d){
-    qDebug()<<"Connect with dificult";
-    this->setDificult(d);
+    qDebug()<<"Connect with dificult"<<d;
+    this->setDificultBoard(d);
+
+}
+
+void QTetrixBoard::tryDifficult(){
+    qDebug()<<"Try difficult: "<<this->dificultBoard;
 }
 
 
-void QTetrixBoard::paintEvent(QPaintEvent *event){
+void QTetrixBoard::paintEvent(QPaintEvent *event){ // MOVIMIENTO DE FIGURAS
     QFrame::paintEvent(event);
     QPainter painter(this);
     QRect rect= contentsRect();
@@ -96,6 +104,7 @@ void QTetrixBoard::paintEvent(QPaintEvent *event){
             }
     }
 }
+
 void QTetrixBoard::keyPressEvent(QKeyEvent *event)
 {
     if (!isStarted || isPaused || curPiece.shape() == sinForma) {

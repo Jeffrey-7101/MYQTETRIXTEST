@@ -12,16 +12,19 @@ class DificultWindow : public QWidget
     Q_OBJECT
 public:
     explicit DificultWindow(QWidget *parent = nullptr);
+   // QTetrixBoard *board;
+    QTetrixWindow *window;
+
 private:
     QLabel *createLabel(const QString &text);
 
-    QTetrixWindow *window;
-    QTetrixBoard *board;
+
+    //QTetrixBoard *board;
 
     QPushButton *easyMode;
     QPushButton *normalMode;
     QPushButton *bastardMode;
-
+    void showWindonMain();
 public slots:
     void closeWindow(){
         this->close();

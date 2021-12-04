@@ -1,8 +1,22 @@
 #include "dificultwindow.h"
 #include <QGridLayout>
-DificultWindow::DificultWindow(QWidget *parent):QWidget(parent), board(new QTetrixBoard)
+#include <QDebug>
+DificultWindow::DificultWindow(QWidget *parent)
+    :QWidget(parent),window(new QTetrixWindow)
 {
-    window=new QTetrixWindow(board);
+
+
+    int *pe;
+    int x=9;
+    pe=&x;
+    //qDebug()<<x<<" "<<pe;
+
+    QTetrixWindow* newWindow= new QTetrixWindow(parent,x);
+
+    int y= newWindow->getX();
+    qDebug()<<y;
+
+
     easyMode= new QPushButton(tr("&Easy"));
     normalMode= new QPushButton(tr("&Normal"));
     bastardMode= new QPushButton(tr("&BASTARD"));
@@ -24,9 +38,12 @@ DificultWindow::DificultWindow(QWidget *parent):QWidget(parent), board(new QTetr
     connect(bastardMode, &QPushButton::clicked, window, &QTetrixWindow::bastard);
     connect(bastardMode, SIGNAL(clicked()), this, SLOT(closeWindow()));
 
-    connect(window,&QTetrixWindow::dificultSignal,board,&QTetrixBoard::difficult);
+    //conectamos la ventana principal con la board pasando la dificultad
+
+    connect(window,&QTetrixWindow::dificultSignal,window->board,&QTetrixBoard::difficult);
 
     setLayout(layout);
+    resize(200,100);
 }
 
 QLabel *DificultWindow::createLabel(const QString &text)
@@ -35,3 +52,4 @@ QLabel *DificultWindow::createLabel(const QString &text)
     label->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
     return label;
 }
+
