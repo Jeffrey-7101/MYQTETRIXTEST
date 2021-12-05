@@ -24,8 +24,7 @@ QTetrixWindow::QTetrixWindow(QWidget *parent, int x)
         linesLcd = new QLCDNumber(5);//valor por defecto
         linesLcd->setSegmentStyle(QLCDNumber::Outline);
 
-        dificultMessage = new QMessageBox();
-        dificultMessage->setText(" ");
+
 
 
         startButton = new QPushButton(tr("&Start"));    //inicializa botones
@@ -70,8 +69,16 @@ QTetrixWindow::QTetrixWindow(QWidget *parent, int x)
         layout->addWidget(createLabel(tr("LEVEL")), 2, 0);
         layout->addWidget(levelLcd, 3, 0);
         layout->addWidget(startButton, 4, 0);
-        layout->addWidget(createLabel(tr("DIFICULTAD")),5,0);
-
+        //layout->addWidget(createLabel(tr("DIFICULTAD: FÁCIL")),5,0)
+        /*qDebug()<<"Layout:"<<this->dificultadWindow;
+        if(this->dificultadWindow==1)
+            layout->addWidget(createLabel(tr("DIFICULTAD: FÁCIL")),5,0);
+        else if(this->dificultadWindow==2){
+            layout->addWidget(createLabel(tr("DIFICULTAD: MEDIO")),5,0);
+        }
+        else if(this->dificultadWindow==3){
+            layout->addWidget(createLabel(tr("DIFICULTAD: BASTARD")),5,0);
+        }*/
 
 
        // qDebug()<<this->dificultadWindow;
@@ -118,5 +125,10 @@ QTetrixWindow::QTetrixWindow(QWidget *parent, int x)
         this->dificultadWindow=3;
         emit dificultSignal(3);
         this->show();
+    }
+
+    void QTetrixWindow::gameOver(){
+        qDebug()<<"GAME OVER";
+        QMessageBox::information(this,tr("My QTetrix"),tr("GAME OVER"));
     }
 

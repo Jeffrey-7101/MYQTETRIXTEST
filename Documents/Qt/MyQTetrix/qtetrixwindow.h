@@ -30,16 +30,12 @@ public:
     }
 private:
 
-
-
     QLabel *createLabel(const QString &text);
     QLabel *nextPieceLabel;
     QLabel *difcultLabel;
     QLCDNumber *scoreLcd;
     QLCDNumber *levelLcd;
     QLCDNumber *linesLcd;
-
-    QMessageBox *dificultMessage;
 
     QPushButton *startButton;
     QPushButton *quitButton;
@@ -53,6 +49,7 @@ public slots:
     void easy();
     void normal();
     void bastard();
+    void gameOver();
 
    // void dificultSlot(int d);//set Dificult
 signals:

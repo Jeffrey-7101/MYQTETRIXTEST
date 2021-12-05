@@ -42,6 +42,9 @@ DificultWindow::DificultWindow(QWidget *parent)
 
     connect(window,&QTetrixWindow::dificultSignal,window->board,&QTetrixBoard::difficult);
 
+    connect(window->board, &QTetrixBoard::gameOver, window, &QTetrixWindow::gameOver);
+
+
     setLayout(layout);
     resize(200,100);
 }

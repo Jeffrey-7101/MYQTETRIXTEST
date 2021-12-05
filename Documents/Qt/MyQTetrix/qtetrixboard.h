@@ -56,6 +56,7 @@ private:
    void pieceDropped(int dropHeight);
    void removeFullLines();
    void newPiece();
+   void newBastardPiece();
    void showNextPiece();
    bool tryMove(const Pieza &newPiece, int newX, int newY);         //verifica si la pieza se puede mover
    void drawSquare(QPainter &painter, int x, int y, Forma forma);
@@ -71,6 +72,7 @@ signals:
     void scoreChanged(int score);
     void levelChanged(int level);
     void linesRemovedChanged(int numLines);
+    void gameOver();
 
 protected:
     void paintEvent(QPaintEvent *event)override;

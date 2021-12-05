@@ -19,7 +19,7 @@ void QTetrixBoard:: setNextLabel(QLabel *label){
 }
 
 QSize QTetrixBoard::sizeHint() const{
-    return QSize(BoardWidth*15+frameWidth()*2, BoardHeight*15+frameWidth()*2);
+    return QSize(BoardWidth*15+frameWidth()*5, BoardHeight*15+frameWidth()*5);
 }
 
 QSize QTetrixBoard::minimumSizeHint() const{
@@ -259,13 +259,29 @@ void QTetrixBoard::newPiece()
         curPiece.setShape(sinForma);
         timer.stop();
         isStarted = false;
+        emit gameOver();
     }
 
+}
+void QTetrixBoard::newBastardPiece(){
+    curPiece= nextPiece;
+    nextPiece.setRandomShape();
+    curX=BoardWidth/2+1;
+    curY=BoardHeight-1+curPiece.minY();
+
+    if (!tryMove(curPiece, curX, curY)) {
+        curPiece.setShape(sinForma);
+        timer.stop();
+        isStarted = false;
+        emit gameOver();
+    }
 }
 
 void QTetrixBoard::showNextPiece()
 {
     if (!nextPieceLabel)
+        return;
+    if(this->dificultBoard==3)
         return;
 
     int dx = nextPiece.maxX() - nextPiece.minX() + 1;
