@@ -7,6 +7,7 @@
 #include <QPointer>
 #include <QBasicTimer>
 #include "Pieza.h"
+
 class QTetrixBoard : public QFrame
 {
     Q_OBJECT
@@ -19,6 +20,8 @@ public:
 
     void setDificultBoard(int d){this->dificultBoard=d;};
     void tryDifficult();
+    int freeSpaceinLine();
+
 private:
     enum{BoardWidth =10, BoardHeight =22};
 
@@ -40,7 +43,7 @@ private:
 
    Forma board[BoardWidth * BoardHeight];
 
-   Forma &format(int x, int y){return board[(y* BoardWidth)+x];}
+   Forma &formaEn(int x, int y){return board[(y* BoardWidth)+x];}
    int timeOut(){
        return 1000/(1+level);
    }
@@ -63,7 +66,6 @@ private:
 
 
 
-
 public slots:
     void start();
     void pause();
@@ -73,6 +75,7 @@ signals:
     void levelChanged(int level);
     void linesRemovedChanged(int numLines);
     void gameOver();
+
 
 protected:
     void paintEvent(QPaintEvent *event)override;

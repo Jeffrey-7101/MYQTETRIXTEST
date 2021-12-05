@@ -22,12 +22,12 @@ class QTetrixWindow: public QWidget
 {
     Q_OBJECT;
 public:
-    explicit QTetrixWindow(QWidget *parent= nullptr, int x=0);
+    explicit QTetrixWindow(QWidget *parent= nullptr);
     QTetrixBoard *board;
 
-    int getX()const{
+   /* int getX()const{
         return this->aux;
-    }
+    }*/
 private:
 
     QLabel *createLabel(const QString &text);
@@ -41,7 +41,7 @@ private:
     QPushButton *quitButton;
     QPushButton *pauseButton;
     int dificultadWindow=5;
-    int aux;
+   // int aux;
 
 
 

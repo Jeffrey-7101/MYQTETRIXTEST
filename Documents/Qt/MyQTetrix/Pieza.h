@@ -1,6 +1,8 @@
 #ifndef PIEZA_H
 #define PIEZA_H
 
+#include <QObject>
+
 enum Forma{sinForma, formaZ,formaS, formaI, formaT, formaO, formaL, reflejo};
 
 
@@ -22,11 +24,15 @@ public:
         setShape(sinForma);
     }
     void setRandomShape();
+    void setBastardShape();
+
     void setShape(Forma forma);
 
+
+
     Forma shape() const{return formaPieza; }
-    int x(int index) const{return coords[index][0];}
-    int y(int index) const{return coords[index][1];}
+    int x(int index) const{return coords[index][0];}//getX
+    int y(int index) const{return coords[index][1];}//getY
 
     int minX() const;
     int maxX() const;
@@ -35,6 +41,8 @@ public:
 
     Pieza rotateLeft() const;
     Pieza rotateRight() const;
+
+public slots:
 
 };
 

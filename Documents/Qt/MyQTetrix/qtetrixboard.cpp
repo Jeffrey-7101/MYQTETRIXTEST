@@ -11,8 +11,10 @@ QTetrixBoard::QTetrixBoard(QWidget *parent, int _dificult)
     setFrameStyle(QFrame:: Panel | QFrame::Sunken);
     setFocusPolicy(Qt::StrongFocus);
     clear();
-
-    nextPiece.setRandomShape();
+    if(this->dificultBoard==3)
+        nextPiece.setBastardShape();
+    else
+        nextPiece.setRandomShape();
 }
 void QTetrixBoard:: setNextLabel(QLabel *label){
     nextPieceLabel=label;
@@ -50,7 +52,11 @@ void QTetrixBoard::start(){
         emit scoreChanged(score);
         emit levelChanged(level);
 
-        newPiece();
+        if(this->dificultBoard==3)
+            newBastardPiece();
+        else
+            newPiece();
+
         timer.start(timeOut(),this);
 
 }
@@ -67,7 +73,7 @@ void QTetrixBoard::pause(){
 }
 
 void QTetrixBoard::difficult(int d){
-    qDebug()<<"Connect with dificult"<<d;
+    qDebug()<<"Connect to board with dificult"<<d;
     this->setDificultBoard(d);
 
 }
@@ -76,7 +82,7 @@ void QTetrixBoard::tryDifficult(){
     qDebug()<<"Try difficult: "<<this->dificultBoard;
 }
 
-
+//end SLOTS
 void QTetrixBoard::paintEvent(QPaintEvent *event){ // MOVIMIENTO DE FIGURAS
     QFrame::paintEvent(event);
     QPainter painter(this);
@@ -90,7 +96,7 @@ void QTetrixBoard::paintEvent(QPaintEvent *event){ // MOVIMIENTO DE FIGURAS
 
     for(int i=0;i<BoardHeight;i++){
         for(int j=0;j<BoardWidth;j++){
-            Forma forma= format(j,BoardHeight-i-1);
+            Forma forma= formaEn(j,BoardHeight-i-1);
             if(forma != sinForma)
                 drawSquare(painter,rect.left()+j*squareWidht(), boardTop+i*squareHeight(),forma);
         }
@@ -143,7 +149,13 @@ void QTetrixBoard::timerEvent(QTimerEvent *event)
     if (event->timerId() == timer.timerId()) {
         if (isWaitingAfterLine) {
             isWaitingAfterLine = false;
-            newPiece();
+            if(this->dificultBoard==3){
+                newBastardPiece();
+            }
+            else{
+                newPiece();
+            }
+
             timer.start(timeOut(), this);
         } else {
             oneLineDown();
@@ -186,7 +198,7 @@ void QTetrixBoard::pieceDropped(int dropHeight)
     for (int i = 0; i < 4; ++i) {
         int x = curX + curPiece.x(i);
         int y = curY - curPiece.y(i);
-        format(x, y) = curPiece.shape();
+        formaEn(x, y) = curPiece.shape();
     }
 
     ++numPiecesDropped;
@@ -200,9 +212,12 @@ void QTetrixBoard::pieceDropped(int dropHeight)
     emit scoreChanged(score);
     removeFullLines();
 
-    if (!isWaitingAfterLine)
-        newPiece();
-
+    if (!isWaitingAfterLine){
+        if(this->dificultBoard==3)
+            newBastardPiece();
+        else
+            newPiece();
+    }
 }
 
 void QTetrixBoard::removeFullLines()
@@ -213,7 +228,7 @@ void QTetrixBoard::removeFullLines()
         bool lineIsFull = true;
 
         for (int j = 0; j < BoardWidth; ++j) {
-            if (format(j, i) == sinForma) {
+            if (formaEn(j, i) == sinForma) {
                 lineIsFull = false;
                 break;
             }
@@ -224,13 +239,12 @@ void QTetrixBoard::removeFullLines()
             ++numFullLines;
             for (int k = i; k < BoardHeight - 1; ++k) {
                 for (int j = 0; j < BoardWidth; ++j)
-                    format(j, k) = format(j, k + 1);
+                    formaEn(j, k) = formaEn(j, k + 1);
             }
 
             for (int j = 0; j < BoardWidth; ++j)
-                format(j, BoardHeight - 1) = sinForma;
+                formaEn(j, BoardHeight - 1) = sinForma;
         }
-
     }
 
     if (numFullLines > 0) {
@@ -247,8 +261,22 @@ void QTetrixBoard::removeFullLines()
 
 }
 
+int QTetrixBoard::freeSpaceinLine(){
+    int numFreePixel=0;
+    for (int i = BoardHeight - 1; i >= 0; --i) {
+
+        for (int j = 0; j < BoardWidth; ++j) {
+            if (formaEn(j, i) == sinForma) {
+                numFreePixel++;
+            }
+        }
+    }
+    return numFreePixel;
+}
+
 void QTetrixBoard::newPiece()
 {
+
     curPiece = nextPiece;
     nextPiece.setRandomShape();
     showNextPiece();
@@ -264,8 +292,9 @@ void QTetrixBoard::newPiece()
 
 }
 void QTetrixBoard::newBastardPiece(){
+    freeSpaceinLine();
     curPiece= nextPiece;
-    nextPiece.setRandomShape();
+    nextPiece.setBastardShape();
     curX=BoardWidth/2+1;
     curY=BoardHeight-1+curPiece.minY();
 
@@ -308,7 +337,7 @@ bool QTetrixBoard::tryMove(const Pieza &newPiece, int newX, int newY)
         int y = newY - newPiece.y(i);
         if (x < 0 || x >= BoardWidth || y < 0 || y >= BoardHeight)
             return false;
-        if (format(x, y) != sinForma)
+        if (formaEn(x, y) != sinForma)
             return false;
     }
 
@@ -322,8 +351,8 @@ bool QTetrixBoard::tryMove(const Pieza &newPiece, int newX, int newY)
 void QTetrixBoard::drawSquare(QPainter &painter, int x, int y, Forma shape)
 {
     static constexpr QRgb colorTable[8] = {
-        0x000000, 0xCC6666, 0x66CC66, 0x6666CC,
-        0xCCCC66, 0xCC66CC, 0x66CCCC, 0xDAAA00
+        0x000000, 0xECFF33, 0x3533FF, 0xFF33FE,
+        0xFF5733, 0x33FFDA, 0xF7F7FA, 0x3ECE26
     };
 
     QColor color = colorTable[int(shape)];

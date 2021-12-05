@@ -6,15 +6,15 @@ DificultWindow::DificultWindow(QWidget *parent)
 {
 
 
-    int *pe;
-    int x=9;
-    pe=&x;
+    //int *pe;
+   // int x=9;
+    //pe=&x;
     //qDebug()<<x<<" "<<pe;
 
-    QTetrixWindow* newWindow= new QTetrixWindow(parent,x);
+    QTetrixWindow* newWindow= new QTetrixWindow(parent);
 
-    int y= newWindow->getX();
-    qDebug()<<y;
+    //int y= newWindow->getX();
+    //qDebug()<<y;
 
 
     easyMode= new QPushButton(tr("&Easy"));
@@ -37,6 +37,7 @@ DificultWindow::DificultWindow(QWidget *parent)
 
     connect(bastardMode, &QPushButton::clicked, window, &QTetrixWindow::bastard);
     connect(bastardMode, SIGNAL(clicked()), this, SLOT(closeWindow()));
+
 
     //conectamos la ventana principal con la board pasando la dificultad
 

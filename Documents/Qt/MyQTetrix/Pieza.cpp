@@ -1,24 +1,37 @@
 #include "Pieza.h"
+#include "qtetrixboard.h"
 #include <QtCore>
-
+#include <iostream>
 void Pieza::setRandomShape(){
     setShape(Forma(QRandomGenerator::global()->bounded(7)+1));//+1 para evitar el 0 que es la forma nula(sinForma)
 }
+
+void Pieza::setBastardShape(){
+
+    setShape(Forma(QRandomGenerator::global()->bounded(7)+1));
+
+}
+
+/*void Pieza::receiveSpace(QTetrixBoard *board){
+    std::cout<<board->freeSpaceinLine();
+}*/
+
 void Pieza::setShape(Forma forma){
     static constexpr int coordsTable[8][4][2] = {
-            { { 0, 0 },   { 0, 0 },   { 0, 0 },   { 0, 0 } },
-            { { 0, -1 },  { 0, 0 },   { -1, 0},   { -1, 1} },
-            { { 0, -1 },  { 0, 0 },   { 1, 0 },   { 1, 1 } },
-            { { 0, -1 },  { 0, 0 },   { 0, 1 },   { 0, 2 } },
-            { { -1, 0 },  { 0, 0 },   { 1, 0 },   { 0, 1 } },
-            { { 0, 0  },  { 1, 0 },   { 0, 1 },   { 1, 1 } },
-            { { -1, -1},  { 0, -1},   { 0, 0 },   { 0, 1 } },
-            { { 1, -1 },  { 0, -1},   { 0, 0 },   { 0, 1 } }
+            { { 0, 0 },   { 0, 0 },   { 0, 0 },   { 0, 0 } },//sin forma
+            { { 0, -1 },  { 0, 0 },   { -1, 0},   { -1, 1} },//forma 1
+            { { 0, -1 },  { 0, 0 },   { 1, 0 },   { 1, 1 } },//forma 2
+            { { 0, -1 },  { 0, 0 },   { 0, 1 },   { 0, 2 } },//forma 3
+            { { -1, 0 },  { 0, 0 },   { 1, 0 },   { 0, 1 } },//forma 4
+            { { 0, 0  },  { 1, 0 },   { 0, 1 },   { 1, 1 } },//forma 5
+            { { -1, -1},  { 0, -1},   { 0, 0 },   { 0, 1 } },//forma 6
+            { { 1, -1 },  { 0, -1},   { 0, 0 },   { 0, 1 } }//forma 7
         };
 
         for (int i = 0; i < 4 ; i++) {
             for (int j = 0; j < 2; ++j)
                 coords[i][j] = coordsTable[forma][i][j];
+
         }
         formaPieza = forma;
 }
